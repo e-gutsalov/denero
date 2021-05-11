@@ -1,49 +1,49 @@
 <?php
 
-class Item
+final class Item
 {
 
     /**
-    * @var int ID пользователя
-    */
+     * @var int ID пользователя
+     */
 
     private int $id;
 
     /**
-    * @var string имя пользователя
-    */
+     * @var string имя пользователя
+     */
 
     private string $name;
 
     /**
-    * @var int статус пользователя
-    */
+     * @var int статус пользователя
+     */
 
     private int $status;
 
     /**
-    * @var bool статус изменения пользователя
-    */
+     * @var bool статус изменения пользователя
+     */
     private bool $changed;
 
-     /**
+    /**
      * Конструктор
      * @param int $id <p>ID пользователя</p>
-     * @return void <p>Инициализация пользователя</p>
      */
 
-    public function __construct($id)
+    public function __construct(int $id)
     {
         $this->id = $id;
         $this->init();
     }
 
-     /**
+    /**
      * Поиск пользователя в базе данных
      * <p>Запись результата в свойства name и status</p>
      */
 
-    private function init() {
+    private function init()
+    {
 
         // Соединение с БД
         $db = Db::getConnection();
@@ -55,8 +55,8 @@ class Item
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch();
             $this->name = $row->name;
-            $this->status = $row->status;            
-        } 
+            $this->status = $row->status;
+        }
 
     }
 
@@ -67,7 +67,8 @@ class Item
      * @throws Exception <p>Ошибка, если свойство нет</p>
      */
 
-    public function __get($property) {
+    public function __get(string $property): mixed
+    {
         if (property_exists($this, $property)) {
             return $this->$property;
         } else {
@@ -75,39 +76,41 @@ class Item
         }
     }
 
-     /**
+    /**
      * Задание свойств объекта
      * @param string $property <p>Имя свойства</p>
      * @param mixed $value <p>Значение свойства</p>
      * @throws Exception <p>Ошибка, если свойство нет или не верный тип</p>
      */
 
-    public function __set($property, $value) {
+    public function __set(string $property, mixed $value)
+    {
         if (property_exists($this, $property) and isset($value)) {
 
-            if('string' == gettype($value) and 'name' == $property) {
+            if ('string' == gettype($value) and 'name' == $property) {
                 $this->name = $value;
-           } elseif ('integer' == gettype($value) and 'status' == $property) {
+            } elseif ('integer' == gettype($value) and 'status' == $property) {
                 $this->status = $value;
-           } elseif ('boolean' == gettype($value) and 'changed' == $property) {
+            } elseif ('boolean' == gettype($value) and 'changed' == $property) {
                 $this->changed = $value;
-           } else {
+            } else {
                 throw new Exception('Invalid property type.');
-           }
+            }
 
-           $this->save();
+            $this->save();
 
         } else {
             throw new Exception('No existing property.');
         }
     }
 
-     /**
+    /**
      * Сохраняет установленные значения name и status в случае, если свойства объекта были изменены извне
      */
 
-    public function save() {
-        
+    public function save()
+    {
+
         // Соединение с БД
         $db = Db::getConnection();
 

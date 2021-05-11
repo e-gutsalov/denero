@@ -1,8 +1,5 @@
-select
-    name,
-    status,
-    login, 
-    password
-from objects
-join users 
-    on (objects.id = users.object_id)
+SELECT
+    users.*
+FROM users
+JOIN objects
+    ON (objects.id = users.object_id)
