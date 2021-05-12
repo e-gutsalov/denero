@@ -105,6 +105,13 @@ final class Item
     }
 
     /**
+     * @param $name
+     * @param $arguments
+     */
+    final public function __call(string $name, mixed $arguments) {
+        // Делаем метод недоступным
+    }
+    /**
      * Сохраняет установленные значения name и status в случае, если свойства объекта были изменены извне
      */
 
