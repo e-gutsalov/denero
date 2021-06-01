@@ -24,7 +24,7 @@ final class Item
     /**
      * @var bool статус изменения пользователя
      */
-    private bool $changed;
+    protected bool $changed;
 
     /**
      * Конструктор
